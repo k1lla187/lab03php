@@ -1,46 +1,82 @@
 <?php
 require_once "functions.php";
 
-$action = $_GET['action'] ?? '';
+$action = $_GET["action"] ?? "home";
+
+echo "<h2>LAB03 - Mini Utility</h2>";
+
+echo "
+<p>
+    <a href='?action=max&a=10&b=22'>Max</a> |
+    <a href='?action=min&a=10&b=22'>Min</a> |
+    <a href='?action=prime&n=17'>Prime</a> |
+    <a href='?action=fact&n=6'>Factorial</a> |
+    <a href='?action=gcd&a=12&b=18'>GCD</a>
+</p>
+<hr>
+";
 
 switch ($action) {
-    case 'prime':
-        $n = $_GET['n'] ?? 0;
-        echo isPrime($n)
-            ? "$n là số nguyên tố"
-            : "$n không phải là số nguyên tố";
+    case "max":
+        $a = $_GET["a"] ?? null;
+        $b = $_GET["b"] ?? null;
+
+        if (is_numeric($a) && is_numeric($b)) {
+            // cast to float to handle numeric strings
+            echo "Max($a, $b) = " . findMax((float)$a, (float)$b);
+        } else {
+            echo "❌ Vui lòng truyền tham số a và b hợp lệ.";
+        }
         break;
 
-    case 'fact':
-        $n = $_GET['n'] ?? 0;
-        echo "Giai thừa của $n = " . factorial($n);
+    case "min":
+        $a = $_GET["a"] ?? null;
+        $b = $_GET["b"] ?? null;
+
+        if (is_numeric($a) && is_numeric($b)) {
+            // cast to float to handle numeric strings
+            echo "Min($a, $b) = " . findMin((float)$a, (float)$b);
+        } else {
+            echo "❌ Vui lòng truyền tham số a và b hợp lệ.";
+        }
         break;
 
-    case 'gcd':
-        $a = $_GET['a'] ?? 0;
-        $b = $_GET['b'] ?? 0;
-        echo "ƯCLN của $a và $b = " . gcd($a, $b);
+    case "prime":
+        $n = $_GET["n"] ?? null;
+
+        if (is_numeric($n) && $n >= 0) {
+            // cast to int because isPrime has int type hint
+            $ni = (int)$n;
+            echo $ni . (isPrime($ni) ? " là số nguyên tố" : " không phải là số nguyên tố");
+        } else {
+            echo "❌ Vui lòng truyền số n hợp lệ.";
+        }
         break;
 
-    case 'max':
-        $a = $_GET['a'] ?? 0;
-        $b = $_GET['b'] ?? 0;
-        echo "Max($a, $b) = " . myMax($a, $b);
+    case "fact":
+        $n = $_GET["n"] ?? null;
+
+        if (is_numeric($n) && $n >= 0) {
+            $ni = (int)$n;
+            echo "Giai thừa của $ni = " . factorial($ni);
+        } else {
+            echo "❌ Vui lòng truyền số n ≥ 0.";
+        }
         break;
 
-    case 'min':
-        $a = $_GET['a'] ?? 0;
-        $b = $_GET['b'] ?? 0;
-        echo "Min($a, $b) = " . myMin($a, $b);
+    case "gcd":
+        $a = $_GET["a"] ?? null;
+        $b = $_GET["b"] ?? null;
+
+        if (is_numeric($a) && is_numeric($b)) {
+            // cast to int because gcd has int type hints
+            echo "GCD($a, $b) = " . gcd((int)$a, (int)$b);
+        } else {
+            echo "❌ Vui lòng truyền tham số a và b hợp lệ.";
+        }
         break;
 
     default:
-        echo "<h3>Menu Lab03</h3>";
-        echo "<ul>
-                <li>?action=prime&n=17</li>
-                <li>?action=fact&n=6</li>
-                <li>?action=gcd&a=12&b=18</li>
-                <li>?action=max&a=5&b=9</li>
-                <li>?action=min&a=5&b=9</li>
-              </ul>";
+        echo "<i>Chọn một chức năng từ menu phía trên.</i>";
 }
+?>
